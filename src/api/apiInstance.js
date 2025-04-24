@@ -11,13 +11,13 @@ api.interceptors.request.use(
         ...config.data,
         grant_type: 'password',
         client_id: import.meta.env.VITE_CLIENT_ID,
-        client_secret: import.meta.VITE_CLIENT_SECRET,
+        client_secret: import.meta.env.VITE_CLIENT_SECRET,
       };
     } else {
       const accessToken = localStorage.getItem('accessToken');
 
       if (accessToken) {
-        config.headers['Authorization'] = `Bearer ${accessToken}`;
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
     }
 
@@ -25,6 +25,18 @@ api.interceptors.request.use(
   },
   (error) => {
     Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('accessToken');
+      window.location.href = '/';
+    }
+
+    return Promise.reject(error);
   }
 );
 

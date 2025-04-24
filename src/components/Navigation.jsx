@@ -5,7 +5,7 @@ import menuImage from '../assets/Menu.svg';
 function Navigation() {
   return (
     <nav className="fixed bottom-0 w-full z-2">
-      <div className="w-[380px] mx-auto p-4 bg-white flex justify-evenly items-center rounded-t-xl shadow-lg">
+      <div className="w-full max-w-md mx-auto p-4 bg-white flex justify-evenly items-center rounded-t-xl shadow-lg">
         <Link to="/home">
           <img src={homeImage} alt="home" />
         </Link>

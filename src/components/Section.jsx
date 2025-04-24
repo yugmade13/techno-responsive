@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 function Section({ children }) {
   return (
-    <section className="mb-15 h-full w-[380px] mx-auto overflow-x-hidden">
+    <section className="mb-15 h-full w-full max-w-md mx-auto overflow-x-hidden">
       {children}
     </section>
   );
