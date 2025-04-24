@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/useAuth';
 function Layout() {
   const { accessToken } = useAuth();
 
-  // if (!accessToken) return <Navigate to="/" />;
+  if (!accessToken) return <Navigate to="/" />;
 
   return (
     <>

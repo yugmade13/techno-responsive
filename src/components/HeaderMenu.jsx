@@ -14,7 +14,7 @@ export default function HeaderMenu({ categories, handleCategory }) {
   };
 
   return (
-    <div className="w-[380px] mx-auto p-4 sticky top-0 bg-white z-50">
+    <div className="w-full max-w-md mx-auto p-4 sticky top-0 bg-white z-50">
       <h1 className="w-full text-xl font-bold mb-4 text-center">MENU</h1>
 
       <div className="flex overflow-x-auto space-x-4 scrollbar-hide">

@@ -9,16 +9,16 @@ export const AuthProvider = ({ children }) => {
     localStorage.getItem('accessToken') || null
   );
 
-  const login = async (username, password) => {
+  const login = async (data) => {
     try {
-      const res = await api.post('/oauth/token', { username, password });      
+      const res = await api.post('/oauth/token', { ...data });
 
       localStorage.setItem('accessToken', res.data.access_token);
       setAccessToken(res.data.access_token);
 
       return res.data;
     } catch (error) {
-      throw new Error('Login failed');
+      throw new Error(error.response.data.message);
     }
   };
 

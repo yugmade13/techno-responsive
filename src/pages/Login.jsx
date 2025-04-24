@@ -1,10 +1,17 @@
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../contexts/useAuth';
+import { Navigate, useNavigate } from 'react-router';
 
 import logoTechno from '../assets/logo-techno.png';
+import { useState } from 'react';
 
 const Login = () => {
-  const { login } = useAuth();
+  const [message, setMessage] = useState(null);
+
+  const navigate = useNavigate();
+
+  const { login, accessToken } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -12,8 +19,17 @@ const Login = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    await login(data);
+    try {
+      const res = await login(data);
+      if (res.access_token) {
+        navigate('/home');
+      }
+    } catch (error) {
+      setMessage(error.message);
+    }
   };
+
+  if (accessToken) return <Navigate to="/home" />;
 
   return (
     <div className="min-h-screen flex flex-col justify-start items-center">
@@ -23,21 +39,23 @@ const Login = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-xs">
         <div className="mb-6">
-          <label className="block text-sm mb-1 text-center">Email</label>
+          <label className="block text-sm mb-1 text-center">Username</label>
           <input
-            type="email"
-            placeholder="Email"
+            type="username"
+            placeholder="Username"
             className="w-[300px] px-3 py-2 rounded-lg bg-white shadow-2xl"
-            {...register('email', {
-              required: 'Email wajib diisi',
+            {...register('username', {
+              required: 'Username wajib diisi',
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: 'Format email tidak valid',
+                message: 'Format username tidak valid',
               },
             })}
           />
-          {errors.email && (
-            <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>
+          {errors.username && (
+            <p className="text-sm text-red-600 mt-1">
+              {errors.username.message}
+            </p>
           )}
         </div>
 
@@ -71,6 +89,9 @@ const Login = () => {
             {isSubmitting ? 'Loading...' : 'Login'}
           </button>
         </div>
+        {message && (
+          <div className="text-center text-red-500 mt-4">{message}</div>
+        )}
       </form>
     </div>
   );
